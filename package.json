@@ -1,0 +1,49 @@
+{
+  "name": "khufu-routing",
+  "version": "0.1.0",
+  "license": "(MIT OR Apache-2.0)",
+  "description": "A small routing that perfectly match khufu's model",
+  "repository": "https://github.com/tailhook/khufu-routing",
+  "main": "lib/khufu-routing.js",
+  "scripts": {
+    "prepublish": "npm run test",
+    "pretest": "npm run build",
+    "build": "node ./rollup.js",
+    "prebuild": "rm -rf lib/*",
+    "test": "mocha --compilers js:babel-register"
+  },
+  "keywords": [
+    "khufu",
+    "routing"
+  ],
+  "author": {
+    "name": "Paul Colomiets"
+  },
+  "devDependencies": {
+    "assert": "^1.4.1",
+    "babel-core": "6.24.1",
+    "babel-plugin-transform-runtime": "6.23.0",
+    "babel-plugin-transform-es2015-classes": "6.23.0",
+    "babel-plugin-transform-object-rest-spread": "6.8",
+    "babel-preset-es2015": "6.24.1",
+    "babel-preset-es2015-rollup": "3.0.0",
+    "babel-preset-stage-0": "6.24.1",
+    "babel-register": "6.24.1",
+    "regenerator-runtime": "^0.10.5",
+    "mocha": "2.5.3",
+    "rollup": "0.41.6",
+    "rollup-plugin-babel": "2.7.1",
+    "rollup-plugin-commonjs": "8.0.2",
+    "sinon": "2.2.0"
+  },
+  "dependencies": {
+    "babel-runtime": "6.23.0"
+  },
+  "babel": {
+    "presets": [ "es2015", "stage-0" ],
+    "plugins": [
+      "babel-plugin-transform-object-rest-spread",
+      ["transform-es2015-classes", { "loose": true }]
+    ]
+  }
+}

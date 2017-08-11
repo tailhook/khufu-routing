@@ -1,0 +1,6 @@
+/.idea
+/.vagga
+/node_modules
+/lib
+/tmp
+npm-debug.log
