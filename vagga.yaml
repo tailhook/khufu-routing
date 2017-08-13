@@ -8,6 +8,14 @@ containers:
       PATH: /bin:/usr/bin:/usr/local/bin:/usr/lib/node_modules/.bin
       BABEL_DISABLE_CACHE: 1
     - !YarnDependencies
+    # for examples
+    - !NpmInstall
+      - webpack@3.5.3
+      - ./khufu
+      - ./khufu/khufu-runtime
+      - babel-loader@7.1.1
+      - incremental-dom@0.5.1
+      - redux@3.7.2
     environ: *nodeenv
 
 commands:
@@ -18,3 +26,8 @@ commands:
   test: !Command
     container: js
     run: [npm, run, test]
+
+  webpack: !Command
+    description: Run webpack (useful for compiling examples)
+    container: js
+    run: [webpack]
