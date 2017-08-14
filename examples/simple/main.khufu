@@ -1,0 +1,32 @@
+view page1(rtr):
+  <div>
+    "page1"
+
+view page2(rtr):
+  <div>
+    "page2"
+
+
+view main(router):
+  <div>
+    <div> "Main bar"
+    <div>
+      "Left side bar"
+      <ul>
+        <li>
+          <a href="/page1">
+            "page1"
+        <li>
+          <a href="/page2">
+            "page2"
+    // left sidebar ends
+    <div>
+      "Main content"
+      if router.at(''):
+        "Root"
+      elif let rtr = router.at('page1'):
+        page1(rtr)
+      elif let rtr = router.at('page2'):
+        page2(rtr)
+      else:
+        "Not found"

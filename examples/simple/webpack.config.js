@@ -17,7 +17,9 @@ module.exports = {
         }],
     },
     resolve: {
-        modules: ["/usr/lib/node_modules", "node_modules"],
+        modules: ["/usr/lib/node_modules", "node_modules",
+            "../../lib" // so we can test without installation, don't copy it
+            ],
         mainFields: ["jsnext:main", "main"],
     },
     resolveLoader: {

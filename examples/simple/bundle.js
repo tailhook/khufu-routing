@@ -2250,13 +2250,15 @@ var _khufuRuntime = __webpack_require__(8);
 
 var _khufuRuntime2 = _interopRequireDefault(_khufuRuntime);
 
-var _counter = __webpack_require__(29);
+var _main = __webpack_require__(29);
+
+var _khufuRouting = __webpack_require__(30);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-(0, _khufuRuntime2.default)(document.getElementById('app'), (0, _counter.main)(), {
+(0, _khufuRuntime2.default)(document.getElementById('app'), (0, _main.main)(new _khufuRouting.Router(window, location)), {
     store: function store(reducer, middleware, state) {
         return (0, _redux.createStore)(reducer, state, _redux.applyMiddleware.apply(undefined, _toConsumableArray(middleware)));
     }
@@ -3042,42 +3044,70 @@ SuppressedError.prototype.constructor = SuppressedError;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.page1 = page1;
+exports.page2 = page2;
 exports.main = main;
 
 var _khufuRuntime = __webpack_require__(8);
 
-var _counter = __webpack_require__(30);
-
-var _INPUT_ATTRS = ["disabled", "disabled", "size", "6"];
-function main() {
+var _A_ATTRS = ["href", "/page1"],
+    _A_ATTRS2 = ["href", "/page2"];
+function page1(_rtr) {
+  return function page1$(key) {
+    (0, _khufuRuntime.elementOpen)("div", key + "-1-div");
+    (0, _khufuRuntime.text)("page1");
+    (0, _khufuRuntime.elementClose)("div");
+  };
+}
+function page2(_rtr2) {
+  return function page2$(key) {
+    (0, _khufuRuntime.elementOpen)("div", key + "-1-div");
+    (0, _khufuRuntime.text)("page2");
+    (0, _khufuRuntime.elementClose)("div");
+  };
+}
+function main(_router) {
   return function main$(key) {
-    var _p_stores = (0, _khufuRuntime.elementOpen)("p", key + "-1-p", null, "__stores", {
-      counter: function counter() {
-        return [_counter.Counter, []];
-      }
-    }).__stores;
-
+    (0, _khufuRuntime.elementOpen)("div", key + "-1-div");
+    (0, _khufuRuntime.elementOpen)("div", "-1-div");
+    (0, _khufuRuntime.text)("Main bar");
+    (0, _khufuRuntime.elementClose)("div");
+    (0, _khufuRuntime.elementOpen)("div", "-2-div");
+    (0, _khufuRuntime.text)("Left side bar");
+    (0, _khufuRuntime.elementOpen)("ul", "-2-ul");
+    (0, _khufuRuntime.elementOpen)("li", "-1-li");
+    (0, _khufuRuntime.elementOpen)("a", "-1-a", _A_ATTRS);
+    (0, _khufuRuntime.text)("page1");
+    (0, _khufuRuntime.elementClose)("a");
+    (0, _khufuRuntime.elementClose)("li");
+    (0, _khufuRuntime.elementOpen)("li", "-2-li");
+    (0, _khufuRuntime.elementOpen)("a", "-1-a", _A_ATTRS2);
+    (0, _khufuRuntime.text)("page2");
+    (0, _khufuRuntime.elementClose)("a");
+    (0, _khufuRuntime.elementClose)("li");
+    (0, _khufuRuntime.elementClose)("ul");
+    (0, _khufuRuntime.elementClose)("div");
+    (0, _khufuRuntime.elementOpen)("div", "-3-div");
     {
-      var _ln_click = function _ln_click(event) {
-        _p_stores.counter.dispatch((0, _counter.counter)(1));
-      };
+      var _if_let_cond = void 0,
+          _if_let_cond2 = void 0;
 
-      var _ln_click2 = function _ln_click2(event) {
-        _p_stores.counter.dispatch((0, _counter.counter)(-1));
-      };
+      (0, _khufuRuntime.text)("Main content");
 
-      var _counter_state = _p_stores.counter.getState();
-
-      (0, _khufuRuntime.elementOpen)("button", "-1-button", null, "onclick", _ln_click);
-      (0, _khufuRuntime.text)("+");
-      (0, _khufuRuntime.elementClose)("button");
-      (0, _khufuRuntime.elementVoid)("input", "-2-input", _INPUT_ATTRS, "value", _counter_state);
-
-      (0, _khufuRuntime.elementOpen)("button", "-3-button", null, "onclick", _ln_click2);
-      (0, _khufuRuntime.text)("-");
-      (0, _khufuRuntime.elementClose)("button");
+      if (_router.at("")) {
+        (0, _khufuRuntime.text)("Root");
+      } else if (_if_let_cond = _router.at("page1")) {
+        var _rtr3 = _if_let_cond;
+        (0, _khufuRuntime.item)(page1(_rtr3), "-2if1-1");
+      } else if (_if_let_cond2 = _router.at("page2")) {
+        var _rtr4 = _if_let_cond2;
+        (0, _khufuRuntime.item)(page2(_rtr4), "-2if2-1");
+      } else {
+        (0, _khufuRuntime.text)("Not found");
+      }
     }
-    (0, _khufuRuntime.elementClose)("p");
+    (0, _khufuRuntime.elementClose)("div");
+    (0, _khufuRuntime.elementClose)("div");
   };
 }
 
@@ -3086,28 +3116,65 @@ function main() {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
+(function (global, factory) {
+    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' ? factory(exports) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global['khufu-routing'] = global['khufu-routing'] || {});
+})(undefined, function (exports) {
+    'use strict';
+
+    var classCallCheck = function classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    };
+
+    var Router = function () {
+        function Router(window, history) {
+            classCallCheck(this, Router);
+
+            this._win = window;
+            this._history = history;
+            this._listeners = [];
+            this._pop_state = this._pop_state.bind(this);
+            this.close = this.close.bind(this);
+            this._win.addEventListener("popstate", this._pop_state);
+        }
+
+        Router.prototype.close = function close() {
+            this._win.removeEventListener(this._pop_state);
+        };
+
+        Router.prototype._pop_state = function _pop_state() {};
+
+        Router.prototype.getState = function getState() {
+            return {};
+        };
+
+        Router.prototype.dispatch = function dispatch(ev) {};
+
+        Router.prototype.subscribe = function subscribe(callback) {
+            this._listeners.push(callback);
+            return function () {
+                var idx = this._listeners.indexOf(callback);
+                if (idx >= 0) {
+                    this._listeners.splice(idx, 1);
+                }
+            };
+        };
+
+        return Router;
+    }();
+
+    exports.Router = Router;
+
+    Object.defineProperty(exports, '__esModule', { value: true });
 });
-exports.Counter = Counter;
-exports.counter = counter;
-function Counter() {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-    var action = arguments[1];
-
-    switch (action.type) {
-        case 'incr':
-            return state + action.value;
-        default:
-            return state;
-    }
-}
-
-function counter(x) {
-    return { type: 'incr', value: x };
-}
 
 /***/ })
 /******/ ]);
