@@ -1,6 +1,25 @@
-view page1(rtr):
+import {go} from 'khufu-routing'
+
+style:
+  .bar, .main
+    display: flex
+    flex-direction: row
+
+
+view page1(@router):
   <div>
     "page1"
+    <button>
+      link {click} go('sub1') -> @router
+      "1"
+    <button>
+      link {click} go('sub2') -> @router
+      "2"
+  <div>
+  if @router.at('sub1'):
+    " -> sub1"
+  elif @router.at('sub2'):
+    " -> sub2"
 
 view page2(rtr):
   <div>
@@ -9,24 +28,26 @@ view page2(rtr):
 
 view main(router):
   <div>
-    <div> "Main bar"
-    <div>
-      "Left side bar"
-      <ul>
-        <li>
-          <a href="/page1">
-            "page1"
-        <li>
-          <a href="/page2">
-            "page2"
-    // left sidebar ends
-    <div>
-      "Main content"
-      if router.at(''):
-        "Root"
-      elif let rtr = router.at('page1'):
-        page1(rtr)
-      elif let rtr = router.at('page2'):
-        page2(rtr)
-      else:
-        "Not found"
+    <div.bar> "Main hello"
+    <div.main>
+      <div style={border: 'solid gray 1px', width: '100px'}>
+        "Left side bar"
+        <ul>
+          <li>
+            <a href=router.abs('page1')>
+              "page1"
+          <li>
+            <a href=router.abs('page2')>
+              "page2"
+      // left sidebar ends
+      <div style={border: 'solid gray 1px'}>
+        "Main content"
+        if router.at(''):
+          "Root"
+        elif let rtr = router.at('page1'):
+          page1(rtr)
+        elif let rtr = router.at('page2'):
+          page2(rtr)
+        else:
+          <div>
+            "Not found"

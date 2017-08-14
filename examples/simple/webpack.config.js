@@ -20,7 +20,7 @@ module.exports = {
         modules: ["/usr/lib/node_modules", "node_modules",
             "../../lib" // so we can test without installation, don't copy it
             ],
-        mainFields: ["jsnext:main", "main"],
+        mainFields: ["browser", "jsnext:main", "main"],
     },
     resolveLoader: {
         modules: ["/usr/lib/node_modules"],

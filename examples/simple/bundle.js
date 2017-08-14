@@ -2252,7 +2252,7 @@ var _khufuRuntime2 = _interopRequireDefault(_khufuRuntime);
 
 var _main = __webpack_require__(29);
 
-var _khufuRouting = __webpack_require__(30);
+var _khufuRouting = __webpack_require__(31);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3050,6 +3050,8 @@ exports.main = main;
 
 var _khufuRuntime = __webpack_require__(8);
 
+var _debug = __webpack_require__(30);
+
 var _A_ATTRS = ["href", "/page1"],
     _A_ATTRS2 = ["href", "/page2"];
 function page1(_rtr) {
@@ -3072,7 +3074,9 @@ function main(_router) {
     (0, _khufuRuntime.elementOpen)("div", "-1-div");
     (0, _khufuRuntime.text)("Main bar");
     (0, _khufuRuntime.elementClose)("div");
-    (0, _khufuRuntime.elementOpen)("div", "-2-div");
+    (0, _khufuRuntime.elementOpen)("div", "-2-div", null, "style", {
+      border: "solid gray 1px"
+    });
     (0, _khufuRuntime.text)("Left side bar");
     (0, _khufuRuntime.elementOpen)("ul", "-2-ul");
     (0, _khufuRuntime.elementOpen)("li", "-1-li");
@@ -3087,7 +3091,9 @@ function main(_router) {
     (0, _khufuRuntime.elementClose)("li");
     (0, _khufuRuntime.elementClose)("ul");
     (0, _khufuRuntime.elementClose)("div");
-    (0, _khufuRuntime.elementOpen)("div", "-3-div");
+    (0, _khufuRuntime.elementOpen)("div", "-3-div", null, "style", {
+      border: "solid gray 1px"
+    });
     {
       var _if_let_cond = void 0,
           _if_let_cond2 = void 0;
@@ -3103,7 +3109,9 @@ function main(_router) {
         var _rtr4 = _if_let_cond2;
         (0, _khufuRuntime.item)(page2(_rtr4), "-2if2-1");
       } else {
+        (0, _khufuRuntime.elementOpen)("div", "-2els-1-div");
         (0, _khufuRuntime.text)("Not found");
+        (0, _khufuRuntime.elementClose)("div");
       }
     }
     (0, _khufuRuntime.elementClose)("div");
@@ -3113,6 +3121,23 @@ function main(_router) {
 
 /***/ }),
 /* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.trace = trace;
+function trace() {
+    var _console;
+
+    (_console = console).log.apply(_console, arguments);
+}
+
+/***/ }),
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3144,6 +3169,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             this._pop_state = this._pop_state.bind(this);
             this.close = this.close.bind(this);
             this._win.addEventListener("popstate", this._pop_state);
+            this._parts = [];
         }
 
         Router.prototype.close = function close() {
@@ -3151,6 +3177,18 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         };
 
         Router.prototype._pop_state = function _pop_state() {};
+        // API
+
+
+        Router.prototype.at = function at(name) {
+            if (this._parts[0] == name) {
+                return new Subrouter(this);
+            }
+        };
+        // --------------
+        // Store protocol
+        // --------------
+
 
         Router.prototype.getState = function getState() {
             return {};
