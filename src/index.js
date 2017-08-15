@@ -7,7 +7,7 @@ export class Router {
         this._root = this
         this.close = this.close.bind(this);
         this._listeners = []
-        this._parts = this._loc.pathname.split('/').slice(1)
+        this._parse_location()
 
         win.addEventListener("popstate", this._pop_state.bind(this))
         win.addEventListener("hashchange", this._hash_change.bind(this))
@@ -17,9 +17,15 @@ export class Router {
         delete this._root
         delete this._win
     }
+    _parse_location() {
+        this._parts = this._loc.pathname.split('/').slice(1)
+        for(let i = 0; i < this._listeners.length; ++i) {
+            this._listeners[i]()
+        }
+    }
 
-    _pop_state() {
-        console.log("PPSATET")
+    _pop_state(_event) {
+        this._parse_location()
     }
     _hash_change() {
         console.log("HASH")
@@ -54,6 +60,10 @@ export class Router {
     abs(...parts) {
         return '/' + parts.join('/')
     }
+    go(url) {
+        this._history.pushState({}, '', url)
+        this._parse_location()
+    }
 }
 
 class _Subrouter {
@@ -68,7 +78,6 @@ class _Subrouter {
         return arr.concat(this._rel_path)
     }
     at(name) {
-        console.log("AT ", this)
         if(this._tail[0] == name) {
             return new _Subrouter(this, [name], this._tail.slice(1))
         }
@@ -97,8 +106,7 @@ class _Subrouter {
     dispatch(action) {
         switch(action.type) {
             case 'go':
-                let url = this.rel(action.value);
-                this._root._history.pushState({}, '', url)
+                this._root.go(this.rel(action.value));
                 break;
         }
     }
