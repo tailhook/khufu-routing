@@ -37,4 +37,4 @@ commands:
   devserver: !Command
     description: Run webpack dev server (useful for viewing examples)
     container: js
-    run: [webpack-dev-server]
+    run: [webpack-dev-server, --hot, --history-api-fallback]
