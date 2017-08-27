@@ -40,10 +40,14 @@ export class Router {
     // Store protocol
     // --------------
     getState() {
-        return {}
+        return this
     }
-    dispatch(ev) {
-
+    dispatch(action) {
+        switch(action.type) {
+            case 'go':
+                this._root.go(action.value)
+                break;
+        }
     }
     subscribe(callback) {
         this._listeners.push(callback);
@@ -114,5 +118,10 @@ class _Subrouter {
 }
 
 export function go(value) {
-    return {type: 'go', value: value}
+    if(value instanceof Event) {
+        value.preventDefault()
+        return {type: 'go', value: value.currentTarget.href}
+    } else {
+        return {type: 'go', value: value}
+    }
 }
