@@ -1,3 +1,6 @@
+import {CANCEL} from 'khufu-runtime'
+
+
 export class Router {
     constructor(win) {
         this._win = win
@@ -35,6 +38,9 @@ export class Router {
         if(this._parts[0] == name) {
             return new _Subrouter(this, [name], this._parts.slice(1))
         }
+    }
+    query(name, defvalue='') {
+        return new _Query(this, name, defvalue)
     }
     // --------------
     // Store protocol
@@ -117,11 +123,43 @@ class _Subrouter {
     subscribe() { return () => null }
 }
 
+export class _Query {
+    constructor(parent, name, defvalue) {
+        this._name = name
+        this._value = defvalue
+        this._default = defvalue
+        this._parent = parent
+        this._root = root
+        parent._add_query(name)
+    }
+    getState() {
+        return this
+    }
+    dispatch(action) {
+        switch(action.type) {
+            case CANCEL:
+                parent._remove_query(name)
+                break;
+            case 'set':
+                this._value = action.value
+                break;
+        }
+    }
+}
+
 export function go(value) {
     if(value instanceof Event) {
         value.preventDefault()
         return {type: 'go', value: value.currentTarget.href}
     } else {
         return {type: 'go', value: value}
+    }
+}
+
+export function input(value) {
+    if(value instanceof Event) {
+        return {type: 'set', value: value.currentTarget.value}
+    } else {
+        return {type: 'set', value: value}
     }
 }

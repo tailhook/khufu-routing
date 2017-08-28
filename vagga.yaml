@@ -8,16 +8,19 @@ containers:
       PATH: /bin:/usr/bin:/usr/local/bin:/usr/lib/node_modules/.bin
       BABEL_DISABLE_CACHE: 1
     - !YarnDependencies
-    # for examples
-    - !NpmInstall
-      - webpack@3.5.3
-      - webpack-dev-server@2.7.1
-      - ./khufu
-      - ./khufu/khufu-runtime
-      - babel-loader@7.1.1
-      - babel-core@6.25.0
-      - incremental-dom@0.5.1
-      - redux@3.7.2
+    environ: *nodeenv
+
+  example-simple:
+    setup:
+    - !Alpine v3.6
+    - !Install [nodejs-npm]
+    - *nodeenv
+    - !YarnDependencies
+      dir: examples/simple
+      # until bug #3792 in yarn fixed
+    - !Sh |
+        ln -sfn /usr/lib/node_modules/webpack/bin/webpack.js /usr/bin/webpack
+        ln -sfn /usr/lib/node_modules/webpack-dev-server/bin/webpack-dev-server.js /usr/bin/webpack-dev-server
     environ: *nodeenv
 
 commands:
@@ -34,7 +37,8 @@ commands:
     container: js
     run: [webpack]
 
-  devserver: !Command
-    description: Run webpack dev server (useful for viewing examples)
-    container: js
+  example-simple: !Command
+    description: Run simple example with dev server
+    container: example-simple
+    work-dir: /work/examples/simple
     run: [webpack-dev-server, --hot, --history-api-fallback]

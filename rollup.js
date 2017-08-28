@@ -9,7 +9,7 @@ const moduleName = 'khufu-routing';
 
 const plugins = [
   babel({
-    "presets": [ "es2015-rollup", "stage-0" ],
+    "presets": [ "es2015-rollup" ],
     "plugins": [
       "babel-plugin-transform-object-rest-spread",
       ["transform-es2015-classes", { "loose": true }],

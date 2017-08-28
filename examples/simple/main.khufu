@@ -1,4 +1,4 @@
-import {go} from 'khufu-routing'
+import {go, input} from 'khufu-routing'
 
 style:
   .bar, .main
@@ -16,14 +16,22 @@ view page1(@router):
       link {click} go('sub2') -> @router
       "2"
   <div>
-  if @router.at('sub1'):
+  if router.at('sub1'):
     " -> sub1"
-  elif @router.at('sub2'):
+  elif router.at('sub2'):
     " -> sub2"
+
 
 view page2(rtr):
   <div>
     "page2"
+    store @filter = rtr.query('filter')
+    <input type="text" placeholder="filter" value=@filter>
+      link {input} input(event) -> @filter
+
+    <ul>
+      for f of ["banana", "cucumber", "raspberry", "apple"]:
+        <li> f
 
 
 view main(@router):
@@ -34,11 +42,11 @@ view main(@router):
         "Left side bar"
         <ul>
           <li>
-            <a href=@router.abs('page1')>
+            <a href=router.abs('page1')>
               link {click} go(event) -> @router
               "page1"
           <li>
-            <a href=@router.abs('page2')>
+            <a href=router.abs('page2')>
               link {click} go(event) -> @router
               "page2"
       // left sidebar ends
@@ -46,9 +54,9 @@ view main(@router):
         "Main content"
         if @router.at(''):
           "Root"
-        elif let rtr = @router.at('page1'):
+        elif let rtr = router.at('page1'):
           page1(rtr)
-        elif let rtr = @router.at('page2'):
+        elif let rtr = router.at('page2'):
           page2(rtr)
         else:
           <div>

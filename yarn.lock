@@ -858,6 +858,10 @@ home-or-tmp@^2.0.0:
     os-homedir "^1.0.0"
     os-tmpdir "^1.0.1"
 
+incremental-dom@0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/incremental-dom/-/incremental-dom-0.5.1.tgz#52f4539c3e9eee7cd112a6da052fb7162fefb0c3"
+
 inherits@2, inherits@2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.1.tgz#b17d08d326b4423e568eff719f91b0b1cbdf69f1"
@@ -958,6 +962,12 @@ jsesc@~0.5.0:
 json5@^0.5.0:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/json5/-/json5-0.5.1.tgz#1eade7acc012034ad84e2396767ead9fa5495821"
+
+khufu-runtime@0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/khufu-runtime/-/khufu-runtime-0.5.0.tgz#52410aeec8e9a3f207aff2f26f132ff9ea66eac6"
+  dependencies:
+    incremental-dom "0.5.1"
 
 kind-of@^3.0.2:
   version "3.2.2"
