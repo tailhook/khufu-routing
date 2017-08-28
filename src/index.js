@@ -11,6 +11,7 @@ export class Router {
         this.close = this.close.bind(this);
         this._listeners = []
         this._parse_location()
+        this._query_fields = {}
 
         win.addEventListener("popstate", this._pop_state.bind(this))
         win.addEventListener("hashchange", this._hash_change.bind(this))
@@ -22,6 +23,9 @@ export class Router {
     }
     _parse_location() {
         this._parts = this._loc.pathname.split('/').slice(1)
+        this._render()
+    }
+    _render() {
         for(let i = 0; i < this._listeners.length; ++i) {
             this._listeners[i]()
         }
@@ -33,7 +37,20 @@ export class Router {
     _hash_change() {
         console.log("HASH")
     }
+    _path() {
+        return []
+    }
+    _add_query(name, obj) {
+        this._query_fields[name] = obj
+    }
+    _remove_query(name, obj) {
+        if(this._query_fields[name] === obj) {
+            delete this._query_fields[name]
+        }
+    }
+    // --------------
     // API
+    // --------------
     at(name) {
         if(this._parts[0] == name) {
             return new _Subrouter(this, [name], this._parts.slice(1))
@@ -41,6 +58,13 @@ export class Router {
     }
     query(name, defvalue='') {
         return new _Query(this, name, defvalue)
+    }
+    abs(...parts) {
+        return '/' + parts.join('/')
+    }
+    go(url) {
+        this._history.pushState({}, '', url)
+        this._parse_location()
     }
     // --------------
     // Store protocol
@@ -64,16 +88,6 @@ export class Router {
             }
         }
     }
-    _path() {
-        return []
-    }
-    abs(...parts) {
-        return '/' + parts.join('/')
-    }
-    go(url) {
-        this._history.pushState({}, '', url)
-        this._parse_location()
-    }
 }
 
 class _Subrouter {
@@ -82,15 +96,25 @@ class _Subrouter {
         this._parent = parent
         this._root = parent._root
         this._tail = tail
+        this._query_fields = {}
     }
     _path() {
         let arr = this._parent._path()
         return arr.concat(this._rel_path)
     }
+    _remove_query() {
+
+    }
+    // --------------
+    // API
+    // --------------
     at(name) {
         if(this._tail[0] == name) {
             return new _Subrouter(this, [name], this._tail.slice(1))
         }
+    }
+    query(name, defvalue='') {
+        return new _Query(this, name, defvalue)
     }
     rel(path) {
         let cur_path = this._path()
@@ -110,6 +134,9 @@ class _Subrouter {
         }
         return '/' + cur_path.join('/')
     }
+    // --------------
+    // Store protocol
+    // --------------
     getState() {
         return this
     }
@@ -129,11 +156,8 @@ export class _Query {
         this._value = defvalue
         this._default = defvalue
         this._parent = parent
-        this._root = root
-        parent._add_query(name)
-    }
-    getState() {
-        return this
+        this._root = parent._root
+        this._root._add_query(name, this)
     }
     dispatch(action) {
         switch(action.type) {
@@ -142,9 +166,14 @@ export class _Query {
                 break;
             case 'set':
                 this._value = action.value
+                this._root._render()
                 break;
         }
     }
+    getState() {
+        return this._value
+    }
+    subscribe() { return () => null }
 }
 
 export function go(value) {

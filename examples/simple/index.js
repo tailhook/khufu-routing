@@ -6,8 +6,12 @@ import {Router} from 'khufu-routing'
 let router = new Router(window);
 let kh = attach(document.getElementById('app'), main(router), {
     store(reducer, middleware, state) {
-        return createStore(reducer, state,
-            applyMiddleware(...middleware))
+        if(typeof reducer == 'function') {
+            return createStore(reducer, state,
+                applyMiddleware(...middleware))
+        } else {
+            return reducer
+        }
     }
 })
 router.subscribe(kh.queue_render)

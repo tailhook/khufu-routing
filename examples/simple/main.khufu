@@ -31,7 +31,8 @@ view page2(rtr):
 
     <ul>
       for f of ["banana", "cucumber", "raspberry", "apple"]:
-        <li> f
+        if @filter.length == 0 or f.indexOf(@filter) >= 0:
+          <li> f
 
 
 view main(@router):
