@@ -1,14 +1,27 @@
-import {go, input} from 'khufu-routing'
+import {go, set, input} from 'khufu-routing'
 
 style:
   .bar, .main
     display: flex
     flex-direction: row
+  .bar
+    align-items: center
+  .auxiliary
+    color: gray
+    font-size: small
+  .pad
+    padding: 16px
+  .left-bar, .content
+    border: dashed #EEE 2px
+  .btn-advanced
+    margin-left: 8px
+  .btn-advanced.enabled
+    font-weight: bold
 
 
-view page1(@router):
-  <div>
-    "page1"
+view subpages(@router):
+  <div.pad>
+    <h2> "subpages demo"
     <button>
       link {click} go('sub1') -> @router
       "1"
@@ -22,9 +35,9 @@ view page1(@router):
     " -> sub2"
 
 
-view page2(rtr):
-  <div>
-    "page2"
+view fruits(rtr):
+  <div.pad>
+    <h2> "Fruits: filtered list"
     store @filter = rtr.query('filter')
     <input type="text" placeholder="filter" value=@filter>
       link {input} input(event) -> @filter
@@ -37,28 +50,33 @@ view page2(rtr):
 
 view main(@router):
   <div>
-    <div.bar> "Main hello"
+    <div.bar>
+      store @mode = router.query('mode', 'normal')
+      <span.auxiliary> "Top level toggle "
+      <button.btn-advanced.enabled?(@mode == 'advanced')>
+        link {click} set(@mode == 'normal' ? 'advanced' : 'normal') -> @mode
+        "advanced"
     <div.main>
-      <div style={border: 'solid gray 1px', width: '100px'}>
-        "Left side bar"
+      <div.left-bar.pad>
+        <span.auxiliary> "Left side bar"
         <ul>
           <li>
-            <a href=router.abs('page1')>
+            <a href=router.abs('subpages')>
               link {click} go(event) -> @router
-              "page1"
+              "subpages"
           <li>
-            <a href=router.abs('page2')>
+            <a href=router.abs('fruits')>
               link {click} go(event) -> @router
-              "page2"
+              "fruits"
       // left sidebar ends
-      <div style={border: 'solid gray 1px'}>
-        "Main content"
+      <div.content.pad>
+        <span.auxiliary> "Main content"
         if @router.at(''):
           "Root"
-        elif let rtr = router.at('page1'):
-          page1(rtr)
-        elif let rtr = router.at('page2'):
-          page2(rtr)
+        elif let rtr = router.at('subpages'):
+          subpages(rtr)
+        elif let rtr = router.at('fruits'):
+          fruits(rtr)
         else:
           <div>
             "Not found"
