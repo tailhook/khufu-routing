@@ -35,18 +35,39 @@ view subpages(@router):
     " -> sub2"
 
 
-view fruits(rtr):
-  <div.pad>
-    <h2> "Fruits: filtered list"
-    store @filter = rtr.query('filter')
-    <input type="text" placeholder="filter" value=@filter>
-      link {input} input(event) -> @filter
+view fruits(@rtr):
+  if let [selected, @subrtr] = rtr.value():
+    <div.pad>
+      <h3>
+        "Selected: "
+        selected
+      <a href=subrtr.rel('..')>
+        link {click} go(event) -> @subrtr
+        "< back"
+      " "
+      <a href=subrtr.rel('info')>
+        link {click} go(event) -> @subrtr
+        "info"
+      if subrtr.at('info'):
+        <div>
+          "Extra info for: "
+          selected
+  else:
+    <div.pad>
+      <h2> "Fruits: filtered list"
+      store @filter = rtr.query('filter')
+      <input type="text" placeholder="filter" value=@filter>
+        link {input} input(event) -> @filter
 
-    <ul>
-      for f of ["banana", "cucumber", "raspberry", "apple"]:
-        if @filter.length == 0 or f.indexOf(@filter) >= 0:
-          <li> f
-
+      <ul>
+        for f of ["banana", "cucumber", "raspberry", "apple"]:
+          if @filter.length == 0 or f.indexOf(@filter) >= 0:
+            <li>
+              f
+              " "
+              <a href=rtr.rel(f)>
+                link {click} go(event) -> @rtr
+                "select"
 
 view main(@router):
   <div>
