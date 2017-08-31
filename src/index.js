@@ -63,25 +63,6 @@ class _BaseRouter {
                 return [val, new _Subrouter(this, [cur], this._tail.slice(1))]
             }
         } else if(cur) {
-            return [val, new _Subrouter(this, [cur], this._tail.slice(1))]
-        }
-    }
-    query(name, defvalue='') {
-        return new _Query(this, name, defvalue)
-    }
-    at(name) {
-        if(this._tail[0] == name) {
-            return new _Subrouter(this, [name], this._tail.slice(1))
-        }
-    }
-    value(validator=null) {
-        let cur = this._tail[0]
-        if(validator) {
-            let val = validator(cur);
-            if(val != null) {
-                return [val, new _Subrouter(this, [cur], this._tail.slice(1))]
-            }
-        } else if(cur) {
             return [cur, new _Subrouter(this, [cur], this._tail.slice(1))]
         }
     }
@@ -176,13 +157,17 @@ export class Router extends _BaseRouter {
         this._all_fields = {}
 
         this._parse_location()
-        win.addEventListener("popstate", this._pop_state.bind(this))
-        win.addEventListener("hashchange", this._hash_change.bind(this))
+        this._pop_state = this._pop_state.bind(this)
+        this._hash_change = this._hash_change.bind(this)
+        win.addEventListener("popstate", this._pop_state)
+        win.addEventListener("hashchange", this._hash_change)
     }
     close() {
-        this._win.removeEventListener(this._pop_state)
-        delete this._root
+        this._win.removeEventListener("popstate", this._pop_state)
+        this._win.removeEventListener("hashchange", this._hash_change)
         delete this._win
+        delete this._history
+        delete this._loc
     }
     subscribe(callback) {
         this._listeners.push(callback);
