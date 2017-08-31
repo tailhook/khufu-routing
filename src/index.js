@@ -109,7 +109,7 @@ class _BaseRouter {
                     continue
                 let qf = fields[k]
                 let v = qf._value
-                if(v && v != qf._default) {
+                if(v != null && v != qf._default) {
                     q[k] = v
                 }
             }
