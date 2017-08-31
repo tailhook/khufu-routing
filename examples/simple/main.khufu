@@ -82,17 +82,17 @@ view main(@router):
         <span.auxiliary> "Left side bar"
         <ul>
           <li>
-            <a href=router.abs('subpages')>
+            <a href=router.rel('subpages')>
               link {click} go(event) -> @router
               "subpages"
           <li>
-            <a href=router.abs('fruits')>
+            <a href=router.rel('fruits')>
               link {click} go(event) -> @router
               "fruits"
       // left sidebar ends
       <div.content.pad>
         <span.auxiliary> "Main content"
-        if @router.at(''):
+        if router.at(''):
           "Root"
         elif let rtr = router.at('subpages'):
           subpages(rtr)
