@@ -1,0 +1,18 @@
+language: node_js
+node_js: 4
+sudo: false
+cache:
+- yarn
+jobs:
+  include:
+  - language: node_js
+  - stage: publish
+    script: true
+    deploy:
+      provider: npm
+      skip_cleanup: true
+      email: "paul@colomiets.name"
+      api_key:
+        secure: "E1PL4lhw9qKnLFnrMzNcJPwpHokRcmuMlcvqMxEkJLoo7GxdsDwoqfIATyyuaDGuWDQynyzh6ZDpQFP1IjXWC3Lyz4B7gg+PDINcaMJf3b77gp1tp0kJOtCSXhfpetk89wdFkHe/2gvn1KtXNXLwEiU1a/Le0SsGUd71n2PNb7VAtgXeQ6uSjAFN1/sIg4Zq8+wSYD+pz4REqloOTmFNDM6fLuUsAgl35/2KKceGotl4YL93ApUla8ZEZ0w4tlJ+fN7K5/iJt7KrG02POSJ/HC+RhIT8KWxOEygAZ18Bb+Y1XGe9Iy96/1Mw3OxQa45ZEugQ3Wu+c10BvOcw3kjbD2+kqkV3PNmxd9YOBIEcQxx6BiuAZ+Sy/i3pfD+6E3emNbnJtsmTmE6XVYiUa48GC+mWLU07oDaIfKT/NBOYTtadjhcomZSv8RyfzGRv1F/8bNYXw18CWDMZjpRtf5bgoACfXJBYL5phQDY8RLr9r5en6iFUdoChL6wbBcS2iLuThUChWpKfcK45+oMeNT9D0mJLoKQAuz47FAsbkm1WMwnIsll+qMsma/DyxH4qrBzn1dvtObRexZEJzPOymiQhYSJA1eH1NmeU67j37106JS+ierY3laZk3SogTILa4I6HqqE89phdn683fVsH+6l2f7r3rSqY9fJkCi/wKMoryhM="
+      on:
+        tags: true
