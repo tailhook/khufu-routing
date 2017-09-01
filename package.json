@@ -34,9 +34,8 @@
     "rollup-plugin-commonjs": "8.0.2",
     "sinon": "2.2.0"
   },
-  "dependencies": {
-    "khufu-runtime": "0.5.0",
-    "babel-runtime": "6.23.0"
+  "peerDependencies": {
+    "khufu-runtime": ">=0.5.0"
   },
   "babel": {
     "presets": [ "es2015" ],
