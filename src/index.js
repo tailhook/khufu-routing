@@ -35,14 +35,13 @@ class _BaseRouter {
         // TODO(tailhook) clean the url too (is there use case for it?)
     }
     _update_url(input_name) {
-        let path = this._path()
         let qstr = this._query()
         let loc = this._root._loc
-        if(loc.pathname != path || loc.query != qstr) {
+        if(loc.search != qstr) {
             if(input_name && this._last_query_input === input_name) {
-                this._root._history.replaceState({}, '', path + qstr)
+                this._root._history.replaceState({}, '', loc.pathname + qstr)
             } else {
-                this._root._history.pushState({}, '', path + qstr)
+                this._root._history.pushState({}, '', loc.pathname + qstr)
                 this._last_query_input = input_name
             }
         }
@@ -208,7 +207,6 @@ export class Router extends _BaseRouter {
     }
     _hash_change() {
         this._last_query_input = null
-        console.log("HASH")
     }
     _path() {
         return []
