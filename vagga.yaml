@@ -2,12 +2,16 @@ containers:
   js:
     setup:
     - !Alpine v3.6
-    - !Install [nodejs-npm]
+    - !Install [nodejs-npm, vim]
     - &nodeenv !Env
       NODE_PATH: /usr/lib/node_modules
       PATH: /bin:/usr/bin:/usr/local/bin:/usr/lib/node_modules/.bin
       BABEL_DISABLE_CACHE: 1
     - !YarnDependencies
+    - &bulk !Tar
+      url: "https://github.com/tailhook/bulk/releases/download/v0.4.9/bulk-v0.4.9.tar.gz"
+      sha256: 23471a9986274bb4b7098c03e2eb7e1204171869b72c45385fcee1c64db2d111
+      path: /
     environ: *nodeenv
 
   example-simple:
@@ -42,3 +46,8 @@ commands:
     container: example-simple
     work-dir: /work/examples/simple
     run: [webpack-dev-server, --hot, --history-api-fallback]
+
+  _bulk: !Command
+    description: Run arbitrary bulk command (maintains version number)
+    container: js
+    run: [bulk]

@@ -1,0 +1,9 @@
+minimum-bulk: v0.4.1
+
+versions:
+
+- file: package.json
+  regex: ^\s*"version":\s*"([^"]+)"
+
+- file: README.md
+  regex: khufu-routing@(\S+)
