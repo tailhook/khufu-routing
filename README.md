@@ -76,7 +76,7 @@ if let r1 = router.at('site'):
 
 In reality it will not be the same block of code, for example you will match
 for `site` in `main.khufu`, for `articles` in `site.khufu` and for `new` in `site/articles.khufu`. Additionally each of the `if` statements usually has
-it's own part of a template.
+some HTML markup.
 
 To match the value against the rule, rather than constant use `value(func)`:
 
@@ -92,11 +92,11 @@ method returns pair: result of the `func` and subrouter.
 
 Both `at()` and `value()` return subrouters that are basis for three things:
 
-1. Matching down the chain
+1. Matching next path elements
 2. Generating URLs relative to the subrouter
 3. Adding query parameters
 
-The no 2 and 3 are explained below.
+The no. 2 and 3 are explained below.
 
 Matching Query
 --------------
@@ -116,15 +116,15 @@ a store for it using `.query(name)`. Here are examples of two parameters:
 For the URL `/articles?edit=true&filter=xxx` the value of `@edit_mode` store
 will be `true` and the value of `@filter` store will be `xxx`.
 
-To make attach actions to them there are two action creators:
+To attach actions to them there are two action creators:
 
 * `set()`
 * `input()`
 
 The peculiarity of the `input` method is that consequent input isn't added
-to the history as separate pages. I.e. when user types text, it will not
-get a history entry for every change. Here is how it's used:
-
+to the history as separate pages. I.e. as user types text the URL bar is
+updated but there is no history entry for every key press. Here is how it's
+used:
 
 ```js
 import {set, input} from 'khufu-routing'
@@ -153,8 +153,7 @@ Generating URLs
 ---------------
 
 There is only one tool for generating url, it's specifying path, relative
-to the URL of the router (not current page) for example
-(the text of the link in example below shows the link target):
+to the URL of the router (note: not relative to the current page) for example:
 
 ```js
 if let r1 = router.at('site'):
