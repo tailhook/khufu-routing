@@ -6,6 +6,7 @@
   "repository": "https://github.com/tailhook/khufu-routing",
   "main": "lib/khufu-routing.js",
   "scripts": {
+    "prepublish": "npm run build",
     "pretest": "npm run build",
     "build": "node ./rollup.js",
     "prebuild": "rm -rf lib/*",
