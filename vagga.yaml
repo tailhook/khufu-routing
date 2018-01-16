@@ -21,10 +21,6 @@ containers:
     - *nodeenv
     - !YarnDependencies
       dir: examples/simple
-      # until bug #3792 in yarn fixed
-    - !Sh |
-        ln -sfn /usr/lib/node_modules/webpack/bin/webpack.js /usr/bin/webpack
-        ln -sfn /usr/lib/node_modules/webpack-dev-server/bin/webpack-dev-server.js /usr/bin/webpack-dev-server
     environ: *nodeenv
 
 commands:
