@@ -69,9 +69,11 @@ class _BaseRouter {
         return new _Query(this, name, defvalue)
     }
     rel(path) {
-        if(path.charAt(0) == '/')
+        if(path.charAt(0) == '/') {
             // TODO(tailhook) traverse up and match
-            return path
+            let prefix = this._root._path().join('/');
+            return (prefix ? '/' + prefix : '') + path
+        }
         let parts = path.split('/')
         return this._rel(parts)
     }
@@ -138,17 +140,44 @@ class _BaseRouter {
     dispatch(action) {
         switch(action.type) {
             case 'go':
-                this._root.go(this.rel(action.value));
+                let rel_path = action.value
+                if(action.absolute) {
+                    let loc = this._root._loc
+                    let abs_prefix = loc.protocol + '//' + loc.host + '/'
+                    if(rel_path.substr(0, abs_prefix.length) == abs_prefix) {
+                        rel_path = rel_path.substr(abs_prefix.length-1)
+                    } else if(rel_path.charAt(0) != '/') {
+                        loc.assign(rel_path)
+                    }
+                    let prefix = this._root._prefix
+                    let chunks = rel_path.split('/').filter(x => x)
+                    for(var i=0; i < prefix.length; ++i) {
+                        if(chunks[i] != prefix[i]) {
+                            return loc.assign(rel_path)
+                        }
+                    }
+                    rel_path = '/' + chunks.slice(prefix.length).join('/')
+                }
+                this._root.go(this.rel(rel_path));
                 break;
         }
     }
     subscribe() { return () => null }
 }
 
+function strip_prefix(path, prefix) {
+    let chunks = path.split('/').filter(x => x)
+    for(var i=0; i < prefix.length; ++i) {
+        if(chunks[i] != prefix[i]) {
+            return []
+        }
+    }
+    return chunks.slice(prefix.length)
+}
 
 export class Router extends _BaseRouter {
-    constructor(win) {
-        super(null, [], win.location.pathname.split('/').slice(1))
+    constructor(win, prefix='') {
+        super(null, [], '')
         this._win = win
         this._history = win.history
         this._loc = win.location
@@ -158,6 +187,14 @@ export class Router extends _BaseRouter {
         this._last_query_input = null
         this._all_fields = {}
 
+
+        if(!prefix || prefix == '' || prefix == '/') {
+            prefix = []
+        }
+        if(typeof prefix == 'string') {
+            prefix = prefix.split('/').filter(x => x)
+        }
+        this._prefix = prefix
         this._parse_location()
         this._pop_state = this._pop_state.bind(this)
         this._hash_change = this._hash_change.bind(this)
@@ -181,7 +218,7 @@ export class Router extends _BaseRouter {
         }
     }
     _parse_location() {
-        this._tail = this._loc.pathname.split('/').slice(1)
+        this._tail = strip_prefix(this._loc.pathname, this._prefix)
         for(var k in this._all_fields) {
             let qf = this._all_fields[k];
             qf._value = qf._default
@@ -212,7 +249,7 @@ export class Router extends _BaseRouter {
         this._last_query_input = null
     }
     _path() {
-        return []
+        return this._prefix
     }
     go(url) {
         this._last_query_input = null
@@ -262,12 +299,7 @@ export class _Query {
 export function go(value) {
     if(value instanceof Event) {
         value.preventDefault()
-        let abs_prefix = location.protocol + '//' + location.host
-        let href = value.currentTarget.href
-        if(href.substr(0, abs_prefix.length) == abs_prefix) {
-            href = href.substr(abs_prefix.length)
-        }
-        return {type: 'go', value: href}
+        return {type: 'go', value: value.currentTarget.href, absolute: true}
     } else {
         return {type: 'go', value: value}
     }
