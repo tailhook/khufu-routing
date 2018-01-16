@@ -75,6 +75,9 @@ class _BaseRouter {
         let parts = path.split('/')
         return this._rel(parts)
     }
+    tail() {
+        return this._tail.join('/')
+    }
     _rel(parts) {
         let tail = []
         for(let i = 0; i < parts.length; ++i) {
