@@ -23,7 +23,7 @@ Installation
 ------------
 
 ```sh
-npm install khufu-routing@0.1.2 --save
+npm install khufu-routing@0.1.3 --save
 ```
 
 Setup Code
